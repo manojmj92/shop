@@ -1,0 +1,61 @@
+{% extends "shopify_app/base.html" %}
+
+{% block content %}
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+  <ul class="nav navbar-nav navbar-left">
+        <li data-intro='Hi. Welcome to Shopify App!'><a href="{% url 'home' %}">Shopify App</a></li>
+  </ul>
+   <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'reload' %}">Reload</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+     </ul>
+  </div>
+</nav>
+<form method="GET" action = "/search" class="search-form">
+    <input id="productname" class="form-control" placeholder="Enter product name to search" name="product">
+    <button type="submit" class="btn btn-lg btn-primary btn-block" id="login_button" style="display:none"></button>
+</form>
+<div class=" container product-list">
+{% if products %}
+	<div class="product">
+	 	{% for product in products %}
+	 		<div class="product-name">
+	        	{{ product.name }}
+	        </div>
+	        {% if product.orders.in_last_12_months %}
+	         	<div class="customers">
+	         	<p>Total number of orders in last 12 months: {{product.orders.count }} </p>
+	         	<table class="table table-striped">
+	         		<thead>
+	         			<th>Order Number</th>
+	         			<th>Customer Name</th>
+	         			<th>Phone Number</th>
+	         		</thead>
+	         		<tbody>
+			        {% for order in product.orders.in_last_12_months %}
+			        	<tr>
+			       			<td>{{order.id}}</td>
+			        		<td>{{order.customer.name}}</td>
+			        		<td>{{order.customer.phone_number}}</td>
+		        		</tr>
+		       		{% endfor %}
+		       		</tbody>
+		       	</table>
+		       	</div>
+		    {% else %}
+		   		<div class="customers">
+		       		<p>There are no orders for this product</p>
+		       	</div>
+		    {% endif %}
+	 	{% endfor %}
+ 	</div>
+{% else %}
+	<span class="sorrytext">
+	<h3>Sorry.There are no matching products.</h3>
+	<h6><a href="{% url 'home' %}">Back to Home</a></h6>
+	</span>
+{% endif %}
+          
+</div>
+{% endblock content %}

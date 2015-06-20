@@ -1,0 +1,12 @@
+{% extends "shopify_app/base.html" %}
+
+{% block content %}
+
+<form method="POST" class="form-signin">
+    {% csrf_token %}
+
+    <h2 class="title">Enter Shop Name</h2>
+    <input id="shopname" class="form-control" placeholder="Eg: manojs-store-2.myshopify.com" name="shop">
+    <button type="submit" class="btn btn-lg btn-primary btn-block" id="login_button">Login</button>
+</form>
+{% endblock content %}
